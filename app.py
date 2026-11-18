@@ -82,7 +82,7 @@ html, body, [class*="css"], button, input, textarea {font-family:'Cairo', sans-s
 .school {background:#fff; border:1px solid #f6dce3; color:#80677b; border-radius:18px; padding:.85rem 1rem; text-align:center; margin-bottom:1.5rem; box-shadow:0 5px 18px #543c4d0a;}
 .section-title {font-size:1.8rem; font-weight:900; color:#673f8e; margin:.5rem 0 .2rem;}
 .section-hint {color:#59425e; margin-bottom:1rem;} [data-testid="stRadio"] label, [data-testid="stRadio"] label p, [data-testid="stWidgetLabel"] p, [data-testid="stCaptionContainer"] p {color:#3f2d4a !important; opacity:1 !important;} [data-testid="stTextArea"] textarea {color:#342747 !important;} [data-testid="stTextArea"] textarea::placeholder {color:#76667d !important; opacity:1 !important;} [data-testid="stFormSubmitButton"] button {background:linear-gradient(100deg,#c94674,#8044a2) !important; color:#fff !important;}
-div[data-testid="stButton"] button {border:0; border-radius:16px; font-weight:800; min-height:3rem;}
+div[data-testid="stButton"] button {border:0; border-radius:16px; font-weight:900 !important; min-height:3rem; color:#fff !important; background:linear-gradient(100deg,#c94674,#8044a2) !important;}
 .right-card {background:#fff; border:1px solid #f5e2e8; border-radius:21px; padding:1.2rem; min-height:170px; box-shadow:0 8px 22px #5a31570c; text-align:center;}
 .right-card .emoji {font-size:2rem;}
 .right-card h3 {font-size:1.08rem; color:#5a3c78; margin:.45rem 0;}
