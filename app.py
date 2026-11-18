@@ -59,17 +59,18 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
 html, body, [class*="css"], button, input, textarea {font-family:'Cairo', sans-serif !important;}
-.stApp {background:#8acdfd url("https://raw.githubusercontent.com/alhadem-jpg/world-child-day-python/main/childrens-day-background.jpeg") center top / cover fixed no-repeat; color:#342747;}
-.block-container {max-width:1100px; padding:1.5rem 2rem 3rem; margin-top:1rem; margin-bottom:1rem; background:rgba(255,255,255,.78); border:1px solid rgba(255,255,255,.7); border-radius:28px; box-shadow:0 12px 34px #1d4d6a30; backdrop-filter:blur(2px);}
+.stApp {background:linear-gradient(150deg,rgba(255,222,238,.22),rgba(208,238,255,.16)), url("https://raw.githubusercontent.com/alhadem-jpg/world-child-day-python/main/childrens-day-background.jpeg") center top / cover fixed no-repeat; color:#342747;}
+.block-container {max-width:1100px; padding:1.5rem 2rem 3rem; margin-top:1rem; margin-bottom:1rem; background:rgba(255,255,255,.78); border:2px solid rgba(255,255,255,.85); border-radius:30px; box-shadow:0 12px 34px #1d4d6a30; backdrop-filter:blur(3px);}
 @media (max-width:700px) {.block-container {padding:1rem .9rem 2rem !important; margin:.5rem; border-radius:22px;}}
-.hero {background:linear-gradient(115deg,#ff7999,#ff9e78 55%,#ffc66f); border-radius:30px; padding:2.1rem 2rem; text-align:center; color:white; box-shadow:0 14px 35px #de6d6c33; margin-bottom:1.2rem;}
+.hero {background:linear-gradient(115deg,#ff79a8,#ff9e78 55%,#ffd36f); border:3px solid rgba(255,255,255,.7); border-radius:30px; padding:2.1rem 2rem; text-align:center; color:white; box-shadow:0 14px 35px #de6d6c33; margin-bottom:1.2rem;}
 .hero h1 {font-size:clamp(2rem,5vw,3.35rem); margin:0; font-weight:900;}
 .hero p {font-size:1.1rem; margin:.55rem 0 0;}
-.school {background:#fff; border:1px solid #f6dce3; color:#80677b; border-radius:18px; padding:.85rem 1rem; text-align:center; margin-bottom:1.5rem; box-shadow:0 5px 18px #543c4d0a;}
+.school {background:rgba(255,255,255,.94); border:2px solid #f7c6dc; color:#684782; border-radius:22px; padding:1rem; text-align:center; margin-bottom:1.5rem; box-shadow:0 7px 20px #543c4d16;}
+.teacher-credit {display:inline-block; margin:.35rem auto; padding:.4rem 1rem; border-radius:999px; background:linear-gradient(100deg,#fff2a8,#ffd9ec); color:#4b2c68 !important; font-size:1.12rem; font-weight:900; border:2px solid #f2c466; box-shadow:0 4px 10px #d39e2d33;}
 .section-title {font-size:1.8rem; font-weight:900; color:#673f8e; margin:.5rem 0 .2rem;}
 .section-hint {color:#59425e; margin-bottom:1rem;} [data-testid="stRadio"] label, [data-testid="stRadio"] label p, [data-testid="stWidgetLabel"] p, [data-testid="stCaptionContainer"] p {color:#3f2d4a !important; opacity:1 !important;} [data-testid="stTextArea"] textarea {color:#342747 !important;} [data-testid="stTextArea"] textarea::placeholder {color:#76667d !important; opacity:1 !important;} [data-testid="stFormSubmitButton"] button {background:linear-gradient(100deg,#c94674,#8044a2) !important; color:#fff !important;}
 div[data-testid="stButton"] button {border:0; border-radius:16px; font-weight:900 !important; min-height:3.25rem; font-size:1.05rem !important; color:#fff !important; background:linear-gradient(100deg,#c94674,#8044a2) !important;} div[data-testid="stButton"] button, div[data-testid="stButton"] button * {color:#fff !important; font-weight:900 !important; text-shadow:0 1px 2px #58204f !important;}
-.right-card {background:#fff; border:1px solid #f5e2e8; border-radius:21px; padding:1.2rem; min-height:170px; box-shadow:0 8px 22px #5a31570c; text-align:center;}
+.right-card {background:linear-gradient(145deg,#fffef1,#fff5fa); border:2px solid #f5d7e8; border-radius:24px; padding:1.2rem; min-height:170px; box-shadow:0 9px 24px #9d5f7a18; text-align:center;}
 .right-card .emoji {font-size:2rem;}
 .right-card h3 {font-size:1.08rem; color:#5a3c78; margin:.45rem 0;}
 .right-card p {font-size:.94rem; color:#735f75; margin:0;}
@@ -87,7 +88,7 @@ st.markdown("""
   <h1>🌍 اليوم العالمي للطفل 🧸</h1>
   <p>نفرح، نحلم، ونكتب رسائل من القلب 💛</p>
 </div>
-<div class="school" dir="rtl"><b>بكل الحب، مدرسة الزويراء الأولى الابتدائية</b><br>إعداد: أ. منال الحربي 🌷<br>معًا نحتفي بحقوق كل طفل ونستمع لصوته الجميل</div>
+<div class="school" dir="rtl"><b>بكل الحب، مدرسة الزويراء الأولى الابتدائية</b><br><span class="teacher-credit">إعداد: أ. منال الحربي و أ. ساميه ناصر 🌷</span><br>معًا نحتفي بحقوق كل طفل ونستمع لصوته الجميل</div>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="section-title" dir="rtl">حقوقي الجميلة</div><div class="section-hint" dir="rtl">لكل طفل حقوق جميلة تساعده أن يكبر سعيدًا وآمنًا.</div>', unsafe_allow_html=True)
@@ -129,4 +130,4 @@ else:
         st.markdown(f'<div class="message-card" dir="rtl" style="background:{bg};border:1px solid {border}"><small>{html.escape(row["kind"])} 💗</small><p>{html.escape(row["body"])}</p></div>', unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
-st.markdown('<div class="footer" dir="rtl">بكل الحب، <b>مدرسة الزويراء الأولى الابتدائية</b><br>إعداد: <b>أ. منال الحربي</b> 🌷</div>', unsafe_allow_html=True)
+st.markdown('<div class="footer" dir="rtl">بكل الحب، <b>مدرسة الزويراء الأولى الابتدائية</b><br><span class="teacher-credit">إعداد: أ. منال الحربي و أ. ساميه ناصر 🌷</span></div>', unsafe_allow_html=True)
