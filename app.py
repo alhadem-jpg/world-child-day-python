@@ -98,7 +98,13 @@ st.markdown('<div class="section-title" dir="rtl">🌈 حقوقي الجميلة
 cols = st.columns(3)
 for i, (emoji, title, description) in enumerate(RIGHTS):
     with cols[i % 3]:
-        st.markdown(f'<div class="right-card" dir="rtl"><div class="emoji">{emoji}</div><h3>{title}</h3><p>{description}</p></div>', unsafe_allow_html=True)
+        if st.button(f"{emoji}  {title}", key=f"right_{i}", use_container_width=True):
+            st.session_state["selected_right"] = i
+        if st.session_state.get("selected_right") == i:
+            card_text = description
+        else:
+            card_text = "اضغطي البطاقة لتتعرفي على حقك الجميل 🌷"
+        st.markdown(f'<div class="right-card" dir="rtl"><p>{html.escape(card_text)}</p></div>', unsafe_allow_html=True)
     if i % 3 == 2 and i != len(RIGHTS) - 1:
         cols = st.columns(3)
 
