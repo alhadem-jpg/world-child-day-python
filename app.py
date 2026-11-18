@@ -208,6 +208,12 @@ hr {border-color:rgba(190,151,190,.3) !important;}
 .stHorizontalBlock:has(.right-card) .right-card p{margin:0 !important;color:#806c84 !important;font-size:1.05rem !important;line-height:1.6 !important;}
 @media(max-width:700px){.stHorizontalBlock:has(.right-card){width:100% !important;gap:1rem !important;margin-bottom:.8rem !important;}.stHorizontalBlock:has(.right-card) [data-testid="column"]{min-height:12rem !important;padding:.9rem .8rem .65rem !important;border-radius:30px !important;}.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button{min-height:7.6rem !important;font-size:1.25rem !important;}.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button p{font-size:1.25rem !important;}.stHorizontalBlock:has(.right-card) .right-card p{font-size:.98rem !important;}}
 
+
+/* الإطار الفعلي لبطاقة الحق داخل عمود Streamlit */
+.stHorizontalBlock:has(.right-card) > div[data-testid="stColumn"]{box-sizing:border-box !important;display:flex !important;flex:0 0 100% !important;width:100% !important;max-width:100% !important;min-width:100% !important;align-items:stretch !important;padding:1.1rem 1rem .75rem !important;min-height:12.5rem !important;border:2px solid rgba(255,255,255,.98) !important;border-radius:32px !important;background:linear-gradient(145deg,rgba(255,239,250,.97),rgba(248,238,255,.97)) !important;box-shadow:0 12px 26px rgba(103,70,111,.14) !important;}
+.stHorizontalBlock:has(.right-card) > div[data-testid="stColumn"] > div{width:100% !important;}
+@media(max-width:700px){.stHorizontalBlock:has(.right-card) > div[data-testid="stColumn"]{min-height:12rem !important;padding:.9rem .8rem .65rem !important;border-radius:30px !important;}}
+
 </style>
 """, unsafe_allow_html=True)
 
