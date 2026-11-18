@@ -1,4 +1,3 @@
-import hmac
 import html
 import os
 import sqlite3
@@ -39,32 +38,18 @@ def connect_db():
     return conn
 
 
-def configured_teacher_password():
-    password = os.environ.get("TEACHER_PASSWORD", "")
-    if password:
-        return password
-    try:
-        return st.secrets.get("TEACHER_PASSWORD", "")
-    except Exception:
-        return ""
-
-
 def save_message(kind: str, body: str):
     with connect_db() as conn:
         conn.execute(
-            "INSERT INTO messages(kind, body, approved, created_at) VALUES (?, ?, 0, ?)",
+            "INSERT INTO messages(kind, body, approved, created_at) VALUES (?, ?, 1, ?)",
             (kind, body.strip(), datetime.utcnow().isoformat(timespec="seconds")),
         )
 
 
-def get_messages(approved_only=True):
+def get_messages():
     with connect_db() as conn:
-        if approved_only:
-            return conn.execute(
-                "SELECT id, kind, body FROM messages WHERE approved=1 ORDER BY id DESC"
-            ).fetchall()
         return conn.execute(
-            "SELECT id, kind, body FROM messages ORDER BY id DESC"
+            "SELECT id, kind, body FROM messages WHERE approved=1 ORDER BY id DESC"
         ).fetchall()
 
 
@@ -123,19 +108,19 @@ st.markdown('<div class="section-title" dir="rtl">✍️ هنا تتحدث ال�
 with st.form("message_form", clear_on_submit=True):
     kind = st.radio("اختاري نوع المشاركة", POST_TYPES, horizontal=True)
     message = st.text_area("اكتبي رسالتك هنا", max_chars=400, height=130, placeholder="اكتبي كلماتك الجميلة… من دون اسم أو أي معلومة شخصية.")
-    st.caption("لخصوصيتك: لا تكتبي اسمك أو رقمك أو أي معلومة تكشف هويتك. ستراجع المعلمة الرسالة قبل نشرها.")
+    st.caption("لخصوصيتك: لا تكتبي اسمك أو رقمك أو أي معلومة تكشف هويتك. ستظهر رسالتك للجميع فور إرسالها، فاكتبي كلمات لطيفة وآمنة.")
     submitted = st.form_submit_button("💌 إرسال رسالتي", use_container_width=True)
     if submitted:
         if len(message.strip()) < 3:
             st.warning("اكتبي رسالتك أولًا، ولو بكلمات قليلة 🌷")
         else:
             save_message(kind, message)
-            st.success("وصلت رسالتك إلى المعلمة للمراجعة. شكرًا لصوتك الجميل! 💖")
+            st.success("ظهرت رسالتك للجميع في لوحة رسائل من القلب. شكرًا لصوتك الجميل! 💖")
 
-st.markdown('<div class="section-title" dir="rtl">💌 رسائل من القلب</div><div class="section-hint" dir="rtl">رسائل وافقت المعلمة على مشاركتها تظهر هنا.</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title" dir="rtl">💌 رسائل من القلب</div><div class="section-hint" dir="rtl">رسائل الطالبات تظهر هنا مباشرة بعد إرسالها.</div>', unsafe_allow_html=True)
 public_messages = get_messages()
 if not public_messages:
-    st.info("ستظهر هنا الرسائل الجميلة بعد مراجعتها والموافقة عليها 🌸")
+    st.info("كوني أول من يرسل كلمة جميلة هنا 🌸")
 else:
     colors = [("#fff0f5", "#f6cfdf"), ("#f5efff", "#dfd0f5"), ("#ffffff", "#eee4ec")]
     for i, row in enumerate(public_messages):
@@ -143,31 +128,4 @@ else:
         st.markdown(f'<div class="message-card" dir="rtl" style="background:{bg};border:1px solid {border}"><small>{html.escape(row["kind"])} 💗</small><p>{html.escape(row["body"])}</p></div>', unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
-with st.expander("🔐 لوحة المعلمة — مراجعة المشاركات"):
-    password = st.text_input("كلمة مرور المعلمة", type="password", key="teacher_password")
-    configured_password = configured_teacher_password()
-    if not configured_password:
-        st.warning("لوحة المراجعة مقفلة حتى تضبط المعلمة كلمة المرور في إعدادات الاستضافة باسم TEACHER_PASSWORD.")
-    elif password and hmac.compare_digest(password, configured_password):
-        st.success("تم الدخول إلى لوحة المراجعة.")
-        pending = get_messages(approved_only=False)
-        pending = [r for r in pending if not r["approved"]]
-        if not pending:
-            st.info("لا توجد رسائل بانتظار المراجعة.")
-        for row in pending:
-            st.markdown(f'**{html.escape(row["kind"])}**  \n{html.escape(row["body"])}')
-            approve_col, delete_col = st.columns(2)
-            with approve_col:
-                if st.button("✅ موافقة ونشر", key=f"approve_{row['id']}", use_container_width=True):
-                    with connect_db() as conn:
-                        conn.execute("UPDATE messages SET approved=1 WHERE id=?", (row["id"],))
-                    st.rerun()
-            with delete_col:
-                if st.button("🗑️ رفض وحذف", key=f"delete_{row['id']}", use_container_width=True):
-                    with connect_db() as conn:
-                        conn.execute("DELETE FROM messages WHERE id=?", (row["id"],))
-                    st.rerun()
-    elif password:
-        st.error("كلمة المرور غير صحيحة.")
-
 st.markdown('<div class="footer" dir="rtl">بكل الحب، <b>مدرسة الزويراء الأولى الابتدائية</b><br>إعداد: <b>أ. منال الحربي</b> 🌷</div>', unsafe_allow_html=True)
