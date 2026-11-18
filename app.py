@@ -133,18 +133,58 @@ hr {border-color:#c9e7fa;}
 [data-testid="stFormSubmitButton"] button *,div[data-testid="stButton"] button * {color:#fff !important;}
 @media (max-width:700px) {.stApp {background-attachment:scroll !important; background-size:100% auto !important;} .block-container {background:rgba(255,250,247,.9) !important; padding:1rem .9rem 2rem !important; border-radius:26px !important;} [data-testid="stForm"] {padding:.8rem !important;}}
 
+
+/* واجهة مستوحاة من تصميم هنا تتحدث الطفولة */
+.stApp {background:linear-gradient(rgba(255,247,251,.56),rgba(255,247,251,.72)),url("https://raw.githubusercontent.com/alhadem-jpg/world-child-day-python/main/childrens-day-pastel-background.jpeg") center top / cover fixed no-repeat !important;color:#49324f !important;}
+.block-container {max-width:1180px !important;padding:1rem 1.25rem 3rem !important;margin:0 auto !important;background:transparent !important;border:0 !important;border-radius:0 !important;box-shadow:none !important;backdrop-filter:none !important;}
+.top-nav {position:sticky;top:.5rem;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:1rem;width:min(100%,1020px);margin:.3rem auto 3.2rem;padding:.8rem 1.5rem;border:1px solid rgba(255,255,255,.95);border-radius:999px;background:rgba(255,250,255,.88);box-shadow:0 8px 28px rgba(112,69,110,.12);backdrop-filter:blur(16px);}
+.top-nav a {text-decoration:none !important;color:#58405f !important;font-weight:800;}
+.nav-brand {color:#d65c98 !important;font-size:1.12rem;white-space:nowrap;}
+.nav-links {display:flex;gap:clamp(.8rem,3vw,2.3rem);align-items:center;}
+.nav-links a:hover {color:#d65c98 !important;}
+.hero {background:transparent !important;border:0 !important;border-radius:0 !important;box-shadow:none !important;padding:4.4rem 1rem 7rem !important;margin:0 auto 2rem !important;color:#5b4262 !important;text-align:center;}
+.hero-tag {display:inline-flex;align-items:center;padding:.55rem 1.2rem;border-radius:999px;background:rgba(255,255,255,.88);color:#9671b9;font-weight:800;box-shadow:0 5px 18px rgba(110,70,116,.1);}
+.hero h1 {margin:1.4rem 0 .6rem !important;font-size:clamp(3rem,8vw,5.6rem) !important;font-weight:900 !important;line-height:1.2;background:linear-gradient(100deg,#e45d9c,#a16bd3);-webkit-background-clip:text;background-clip:text;color:transparent !important;text-shadow:none !important;}
+.school-name {font-weight:900;font-size:clamp(1.8rem,4.2vw,3rem);background:linear-gradient(100deg,#e88c57,#39a98d,#9062cc,#e15d96);-webkit-background-clip:text;background-clip:text;color:transparent;margin:.7rem 0;}
+.hero p {max-width:650px;margin:.7rem auto 1.8rem !important;font-size:1.15rem;color:#66556c;line-height:1.9;}
+.hero-actions {display:flex;justify-content:center;flex-wrap:wrap;gap:.8rem;}
+.hero-actions a {display:inline-flex;align-items:center;justify-content:center;padding:.85rem 1.5rem;border-radius:999px;text-decoration:none !important;font-weight:900;box-shadow:0 8px 20px rgba(116,71,124,.12);}
+.hero-primary {background:linear-gradient(100deg,#df609b,#9867cd);color:white !important;}
+.hero-secondary {background:rgba(255,255,255,.88);color:#9671b9 !important;}
+.section-head {text-align:center;margin:1.6rem auto 2.2rem;scroll-margin-top:110px;}
+.section-kicker {display:inline-block;padding:.4rem 1rem;border-radius:999px;background:#f2e5ff;color:#9670b7;font-size:.9rem;font-weight:800;}
+.section-head h2 {margin:.8rem 0 .25rem !important;font-size:clamp(2.1rem,5vw,3rem) !important;font-weight:900 !important;background:linear-gradient(100deg,#df609b,#9867cd);-webkit-background-clip:text;background-clip:text;color:transparent !important;}
+.section-head p {color:#716275;font-size:1.05rem;margin:.3rem 0 !important;}
+.section-stars {display:block;color:#df609b;font-size:1rem;margin-top:.7rem;}
+.stHorizontalBlock:has(.right-card) [data-testid="column"] {background:linear-gradient(145deg,rgba(255,239,250,.96),rgba(248,238,255,.96));border:2px solid rgba(255,255,255,.95);border-radius:28px;padding:.9rem .8rem .5rem;box-shadow:0 12px 24px rgba(103,70,111,.12);transition:transform .2s,box-shadow .2s;}
+.stHorizontalBlock:has(.right-card) [data-testid="column"]:hover {transform:translateY(-4px);box-shadow:0 16px 28px rgba(103,70,111,.17);}
+.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button {min-height:7.5rem !important;border-radius:22px !important;background:transparent !important;border:0 !important;box-shadow:none !important;color:#4e3858 !important;font-size:1.28rem !important;white-space:normal;}
+.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button * {color:#4e3858 !important;text-shadow:none !important;}
+.right-card {min-height:4rem !important;background:transparent !important;border:0 !important;outline:0 !important;border-radius:0 !important;padding:.2rem .3rem .7rem !important;box-shadow:none !important;text-align:center;}
+.right-card p {color:#806c84 !important;font-size:.92rem !important;line-height:1.7 !important;}
+[data-testid="stForm"] {max-width:760px;margin:0 auto 3rem !important;padding:1.5rem 2rem !important;border:2px solid rgba(255,255,255,.98) !important;border-radius:32px !important;background:linear-gradient(145deg,rgba(255,238,250,.95),rgba(247,237,255,.96)) !important;box-shadow:0 14px 30px rgba(103,70,111,.13) !important;}
+[data-testid="stRadio"] [role="radiogroup"] {gap:.65rem !important;}
+[data-testid="stRadio"] label {background:rgba(255,255,255,.82);border:1px solid #f2d6eb;border-radius:18px;padding:.55rem .75rem !important;color:#563f60 !important;font-weight:800 !important;}
+[data-testid="stTextArea"] textarea {min-height:230px !important;background:rgba(255,255,255,.94) !important;border:2px solid #ecd2e7 !important;border-radius:24px !important;color:#49324f !important;font-size:1.03rem !important;}
+[data-testid="stCaptionContainer"] p {color:#847189 !important;}
+[data-testid="stFormSubmitButton"] button,div[data-testid="stButton"] button {background:linear-gradient(100deg,#df609b,#9867cd) !important;border:0 !important;border-radius:999px !important;box-shadow:0 8px 20px rgba(130,72,138,.18) !important;}
+.message-wall {max-width:820px !important;border:0 !important;border-radius:30px !important;background:transparent !important;box-shadow:none !important;padding:.5rem !important;}
+.message-card {border:2px solid rgba(255,255,255,.96) !important;border-radius:26px !important;padding:1.35rem 1.5rem !important;box-shadow:0 10px 24px rgba(108,72,112,.12) !important;}
+.message-card p {color:#4f3c57 !important;}
+.footer {max-width:900px;margin:4rem auto 1rem !important;padding:2rem !important;background:linear-gradient(145deg,rgba(255,239,250,.96),rgba(246,236,255,.96)) !important;border:2px solid white !important;border-radius:32px !important;box-shadow:0 12px 28px rgba(103,70,111,.12) !important;color:#5c4764 !important;font-size:1.15rem;font-weight:800;}
+.teacher-credit {background:white !important;border-color:#f3d9e7 !important;box-shadow:0 4px 12px rgba(124,74,132,.1) !important;}
+hr {border-color:rgba(190,151,190,.3) !important;}
+@media(max-width:700px){.block-container{padding:.5rem .8rem 2rem !important}.top-nav{position:relative;top:auto;flex-direction:column;padding:.7rem;border-radius:24px;margin-bottom:1rem}.nav-links{gap:.8rem;flex-wrap:wrap;justify-content:center;font-size:.84rem}.hero{padding:2.5rem .4rem 4rem !important}.hero h1{font-size:3rem !important}.hero p{font-size:1rem}.stHorizontalBlock:has(.right-card){gap:.7rem}.stHorizontalBlock:has(.right-card) [data-testid="column"]{padding:.65rem .4rem .35rem;border-radius:21px}.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button{min-height:6.5rem !important;font-size:.96rem !important;padding:.5rem !important}.right-card{padding:.1rem .1rem .45rem !important}.right-card p{font-size:.8rem !important}[data-testid="stForm"]{padding:1rem !important;border-radius:25px !important}[data-testid="stTextArea"] textarea{min-height:180px !important}}
+
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<div class="hero" dir="rtl">
-  <h1>🌍 اليوم العالمي للطفل 🧸</h1>
-  <p>نفرح، نحلم، ونكتب رسائل من القلب 💛</p>
-</div>
-<div class="school" dir="rtl"><b>بكل الحب، مدرسة الزويراء الأولى الابتدائية</b><br><span class="teacher-credit">إعداد: أ. منال الحربي و أ. ساميه ناصر 🌷</span><br>معًا نحتفي بحقوق كل طفل ونستمع لصوته الجميل</div>
+<nav class="top-nav" dir="rtl"><a class="nav-brand" href="#top">♥ هنا تتحدث الطفولة</a><div class="nav-links"><a href="#rights">حقوقي الجميلة</a><a href="#voice">هنا تتحدث الطفولة</a><a href="#wall">رسائل من القلب</a></div></nav>
+<div class="hero" id="top" dir="rtl"><div class="hero-tag">⭐ بمناسبة اليوم العالمي للطفل ⭐</div><h1>هنا تتحدث الطفولة</h1><div class="school-name">مدرسة الزويراء الأولى الابتدائية</div><p>لكل طفلة صوت، ولكل صوت حكاية… تعرّفي على حقوقك واكتبي رسالتك للعالم</p><div class="hero-actions"><a class="hero-primary" href="#voice">اكتبي رسالتك　❀</a><a class="hero-secondary" href="#rights">تعرّفي على حقوقك　♡</a></div></div>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="section-title" dir="rtl">حقوقي الجميلة</div><div class="section-hint" dir="rtl">لكل طفل حقوق جميلة تساعده أن يكبر سعيدًا وآمنًا.</div>', unsafe_allow_html=True)
+st.markdown('<div id="rights" class="section-head" dir="rtl"><span class="section-kicker">القسم الأول　❀</span><h2>حقوقي الجميلة</h2><p>اضغطي على كل بطاقة لتكتشفي حقًّا من حقوقك</p><span class="section-stars">♥　★　♥</span></div>', unsafe_allow_html=True)
 cols = st.columns(3)
 for i, (emoji, title, description) in enumerate(RIGHTS):
     with cols[i % 3]:
@@ -159,7 +199,7 @@ for i, (emoji, title, description) in enumerate(RIGHTS):
         cols = st.columns(3)
 
 st.markdown("<br>", unsafe_allow_html=True)
-st.markdown('<div class="section-title" dir="rtl">✍️ هنا تتحدث الطفولة</div><div class="section-hint" dir="rtl">مساحة صغيرة لصوتك الجميل، اكتبي ما يجول في خاطرك.</div>', unsafe_allow_html=True)
+st.markdown('<div id="voice" class="section-head" dir="rtl"><span class="section-kicker">القسم الثاني　❀</span><h2>هنا تتحدث الطفولة</h2><p>مساحة صغيرة لصوتك الجميل، اكتبي ما يجول في خاطرك</p><span class="section-stars">♥　★　♥</span></div>', unsafe_allow_html=True)
 with st.form("message_form", clear_on_submit=True):
     kind = st.radio("اختاري نوع المشاركة", POST_TYPES, horizontal=True)
     message = st.text_area("اكتبي رسالتك هنا", max_chars=400, height=130, placeholder="اكتبي كلماتك الجميلة… من دون اسم أو أي معلومة شخصية.")
@@ -172,7 +212,7 @@ with st.form("message_form", clear_on_submit=True):
             save_message(kind, message)
             st.success("ظهرت رسالتك للجميع في لوحة رسائل من القلب. شكرًا لصوتك الجميل! 💖")
 
-st.markdown('<div class="section-title" dir="rtl">💌 رسائل من القلب</div><div class="section-hint" dir="rtl">رسائل الطالبات تظهر هنا مباشرة بعد إرسالها.</div>', unsafe_allow_html=True)
+st.markdown('<div id="wall" class="section-head" dir="rtl"><span class="section-kicker">القسم الثالث　❀</span><h2>رسائل من القلب</h2><p>كلمات جميلة كتبتها طالباتنا الغاليات</p><span class="section-stars">♥　★　♥</span></div>', unsafe_allow_html=True)
 public_messages = get_messages()
 colors = [("#fff0f5", "#f6cfdf"), ("#f5efff", "#dfd0f5"), ("#ffffff", "#eee4ec")]
 wall_cards = []
