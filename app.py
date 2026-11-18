@@ -1,6 +1,7 @@
 import html
 import hmac
 import os
+import random
 import sqlite3
 from datetime import datetime
 from pathlib import Path
@@ -23,6 +24,65 @@ RIGHTS = [
 ]
 POST_TYPES = ["رسالة لأطفال العالم", "أمنيتي لكل طفل", "من حقي أن…"]
 
+MOTIVATION_LINES = [
+    "أنتِ قادرة على تحقيق أحلامك خطوةً خطوة",
+    "ذكاؤك واجتهادك يفتحان لك أبوابًا جميلة",
+    "محاولتك اليوم بداية نجاح رائع",
+    "أفكارك الجميلة تستحق أن يسمعها الجميع",
+    "ابتسامتك تجعل يوم من حولك أجمل",
+    "قلبك اللطيف هدية جميلة لمن حولك",
+    "لكِ موهبة خاصة تزداد جمالًا كلما شاركتِها",
+    "لا يوجد حلم كبير على عزيمتك",
+    "كل يوم تتعلمين فيه شيئًا جديدًا هو يوم مميز",
+    "أنتِ شجاعة حين تحاولين من جديد",
+    "صوتك مهم ورأيك يستحق الاحترام",
+    "خطواتك الصغيرة تصنع إنجازات كبيرة",
+    "اجتهادك اليوم سيبهرك غدًا",
+    "أنتِ مصدر فرح وفخر لمن يحبك",
+    "خيالك الواسع يجعل العالم أجمل",
+    "لا تستسلمي، فكل محاولة تقرّبك من هدفك",
+    "لديكِ قدرة جميلة على نشر اللطف",
+    "أنتِ تستحقين الفرح والنجاح والأمان",
+    "كل فكرة جميلة تبدأ بطفلة تؤمن بنفسها",
+    "تعلمك المستمر هو سر تميزك",
+    "أنتِ أقوى مما تظنين وأقدر مما تتخيلين",
+    "طيبتك تجعل العالم مكانًا أحنّ",
+    "لكل يوم فرصة جديدة لتبدعي وتتألقي",
+    "أنتِ قادرة على صنع فرق جميل",
+    "أحلامك تستحق أن تحافظي عليها وتسعي إليها",
+    "فضولك الجميل يقودك إلى اكتشافات رائعة",
+    "لديكِ قلب شجاع وعقل مبدع",
+    "كل إنجاز عظيم يبدأ بخطوة صغيرة",
+    "أنتِ جميلة بأفكارك وأخلاقك وأحلامك",
+    "ثقي بنفسك، فأنتِ تتقدمين كل يوم",
+    "وجودك يضيف لونًا جميلًا إلى العالم",
+    "من حقك أن تحلمي وأن تعبّري عن رأيك",
+    "أنتِ تتعلمين وتنموين وتصبحين أفضل كل يوم",
+    "قدرتك على المحاولة سر قوتك",
+    "العالم يحتاج إلى أفكارك المميزة",
+    "أنتِ تستحقين أن يفخر بك قلبك",
+    "الأيام الجميلة تبدأ بإيمانك بنفسك",
+    "كلما تعلمتِ أكثر أزهرت أحلامك",
+    "أنتِ بطلة قصتك الجميلة",
+    "لطفك الصغير يصنع سعادة كبيرة",
+    "أنتِ قادرة على تجاوز الصعوبات بهدوء",
+    "لا بأس أن تخطئي، فالتعلم يبدأ بالمحاولة",
+    "لديكِ طاقة جميلة تستطيعين بها إنجاز الكثير",
+    "أنتِ مبدعة بطريقتك الخاصة",
+    "أحلامك تكبر مع كل خطوة شجاعة",
+    "أنتِ تستحقين أن يسمع العالم صوتك",
+    "كل ما تتقنينه اليوم كان يومًا ما محاولة",
+    "في داخلك نور يضيء طريقك",
+    "أنتِ صديقة رائعة لنفسك حين تشجعينها",
+    "مستقبلك مليء بفرص جميلة تنتظرك"
+]
+MOTIVATION_FRAMES = [
+    "يا {name}، {line}",
+    "{name} الغالية، تذكّري: {line}",
+    "إلى {name} الجميلة: {line}",
+]
+MOTIVATION_COUNT = len(MOTIVATION_LINES) * len(MOTIVATION_FRAMES)
+
 
 def connect_db():
     conn = sqlite3.connect(DB_PATH, timeout=10)
@@ -34,6 +94,11 @@ def connect_db():
         body TEXT NOT NULL,
         approved INTEGER NOT NULL DEFAULT 0,
         created_at TEXT NOT NULL
+    )""")
+    conn.execute("""CREATE TABLE IF NOT EXISTS motivation_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        phrase_id INTEGER NOT NULL UNIQUE,
+        used_at TEXT NOT NULL
     )""")
     conn.commit()
     return conn
@@ -75,6 +140,29 @@ def teacher_password_configured():
     except Exception:
         return os.environ.get("TEACHER_PASSWORD", "")
 
+
+
+
+def next_motivation(name: str):
+    with connect_db() as conn:
+        conn.execute("BEGIN IMMEDIATE")
+        used = {row[0] for row in conn.execute("SELECT phrase_id FROM motivation_history")}
+        last_row = conn.execute("SELECT phrase_id FROM motivation_history ORDER BY id DESC LIMIT 1").fetchone()
+        last_phrase = last_row[0] if last_row else None
+        if len(used) >= MOTIVATION_COUNT:
+            conn.execute("DELETE FROM motivation_history")
+            used = set()
+            if last_phrase is not None and MOTIVATION_COUNT > 1:
+                used.add(last_phrase)
+        available = [phrase_id for phrase_id in range(MOTIVATION_COUNT) if phrase_id not in used]
+        phrase_id = random.choice(available)
+        conn.execute(
+            "INSERT INTO motivation_history(phrase_id, used_at) VALUES (?, ?)",
+            (phrase_id, datetime.utcnow().isoformat(timespec="seconds")),
+        )
+    frame_index, line_index = divmod(phrase_id, len(MOTIVATION_LINES))
+    safe_name = html.escape(name.strip())
+    return MOTIVATION_FRAMES[frame_index].format(name=safe_name, line=MOTIVATION_LINES[line_index])
 
 connect_db().close()
 
@@ -222,12 +310,16 @@ hr {border-color:rgba(190,151,190,.3) !important;}
 .stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button p{font-size:1.4rem !important;line-height:1.45 !important;}
 @media(max-width:700px){.right-icon{width:82px;height:82px;font-size:2.4rem;border-width:8px}.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button{min-height:3.4rem !important;font-size:1.2rem !important}.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button p{font-size:1.2rem !important}}
 
+.motivation-form {max-width:760px;margin:0 auto 1rem !important;padding:1.2rem 1.4rem;border:2px solid rgba(255,255,255,.96);border-radius:28px;background:linear-gradient(145deg,rgba(255,239,250,.96),rgba(247,237,255,.97));box-shadow:0 12px 26px rgba(103,70,111,.12);}
+.motivation-result {max-width:760px;margin:1rem auto 2rem;padding:1.3rem 1.5rem;border:2px solid #fff;border-radius:26px;background:linear-gradient(110deg,#fff1f6,#f3e9ff);color:#5b3f68;text-align:center;font-size:1.2rem;font-weight:900;line-height:1.9;box-shadow:0 10px 24px rgba(103,70,111,.13);animation:rise .55s ease both;}
+[data-testid="stTextInput"] input {background:#fff !important;color:#49324f !important;border:2px solid #ecd2e7 !important;border-radius:16px !important;}
+@media(max-width:700px){.motivation-form{padding:.9rem !important}.motivation-result{font-size:1.05rem;padding:1rem;}}
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown("""
 <div class="butterfly-layer" aria-hidden="true"><span class="child-butterfly butterfly-one"><i class="wing upper left"></i><i class="wing upper right"></i><i class="wing lower left"></i><i class="wing lower right"></i><i class="body"></i></span><span class="child-butterfly butterfly-two"><i class="wing upper left"></i><i class="wing upper right"></i><i class="wing lower left"></i><i class="wing lower right"></i><i class="body"></i></span><span class="child-butterfly butterfly-three"><i class="wing upper left"></i><i class="wing upper right"></i><i class="wing lower left"></i><i class="wing lower right"></i><i class="body"></i></span></div>
-<nav class="top-nav" dir="rtl"><a class="nav-brand" href="#top">♥ هنا تتحدث الطفولة</a><div class="nav-links"><a href="#rights">حقوقي الجميلة</a><a href="#voice">هنا تتحدث الطفولة</a><a href="#wall">رسائل من القلب</a></div></nav>
+<nav class="top-nav" dir="rtl"><a class="nav-brand" href="#top">♥ هنا تتحدث الطفولة</a><div class="nav-links"><a href="#rights">حقوقي الجميلة</a><a href="#motivation">كلمتي لك</a><a href="#voice">هنا تتحدث الطفولة</a><a href="#wall">رسائل من القلب</a></div></nav>
 <div class="hero" id="top" dir="rtl"><div class="hero-tag">⭐ بمناسبة اليوم العالمي للطفل ⭐</div><h1>هنا تتحدث الطفولة</h1><div class="school-name">مدرسة الزويراء الأولى الابتدائية</div><p>لكل طفلة صوت، ولكل صوت حكاية… تعرّفي على حقوقك واكتبي رسالتك للعالم</p><div class="hero-actions"><a class="hero-primary" href="#voice">اكتبي رسالتك　❀</a><a class="hero-secondary" href="#rights">تعرّفي على حقوقك　♡</a></div></div>
 """, unsafe_allow_html=True)
 
@@ -245,6 +337,19 @@ for i, (emoji, title, description) in enumerate(RIGHTS):
         st.markdown(f'<div class="right-card" dir="rtl"><p>{html.escape(card_text)}</p></div>', unsafe_allow_html=True)
     if i % 3 == 2 and i != len(RIGHTS) - 1:
         cols = st.columns(3)
+
+st.markdown('<div id="motivation" class="section-head" dir="rtl"><span class="section-kicker">هدية صغيرة　❀</span><h2>كلمة تحفيزية باسمك</h2><p>اكتبي اسمك الأول، وخذي رسالة جميلة خاصة بك</p><span class="section-stars">♥　★　♥</span></div>', unsafe_allow_html=True)
+with st.form("motivation_form", clear_on_submit=True):
+    student_name = st.text_input("اسمك الأول", max_chars=20, placeholder="مثال: نورة")
+    st.caption("اكتبي الاسم الأول فقط؛ لا نحفظ اسمك في قاعدة بيانات الرسائل.")
+    get_motivation = st.form_submit_button("🌷 أرسلوا لي كلمة تحفيزية", use_container_width=True)
+    if get_motivation:
+        if not student_name.strip():
+            st.warning("اكتبي اسمك الأول لتحصلي على رسالتك الجميلة 🌸")
+        else:
+            st.session_state["motivation_result"] = next_motivation(student_name.strip())
+if st.session_state.get("motivation_result"):
+    st.markdown(f'<div class="motivation-result" dir="rtl">💖 {st.session_state["motivation_result"]} 🌷</div>', unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown('<div id="voice" class="section-head" dir="rtl"><span class="section-kicker">القسم الثاني　❀</span><h2>هنا تتحدث الطفولة</h2><p>مساحة صغيرة لصوتك الجميل، اكتبي ما يجول في خاطرك</p><span class="section-stars">♥　★　♥</span></div>', unsafe_allow_html=True)
