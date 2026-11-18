@@ -176,10 +176,31 @@ hr {border-color:#c9e7fa;}
 hr {border-color:rgba(190,151,190,.3) !important;}
 @media(max-width:700px){.block-container{padding:.5rem .8rem 2rem !important}.top-nav{position:relative;top:auto;flex-direction:column;padding:.7rem;border-radius:24px;margin-bottom:1rem}.nav-links{gap:.8rem;flex-wrap:wrap;justify-content:center;font-size:.84rem}.hero{padding:2.5rem .4rem 4rem !important}.hero h1{font-size:3rem !important}.hero p{font-size:1rem}.stHorizontalBlock:has(.right-card){gap:.7rem}.stHorizontalBlock:has(.right-card) [data-testid="column"]{padding:.65rem .4rem .35rem;border-radius:21px}.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button{min-height:6.5rem !important;font-size:.96rem !important;padding:.5rem !important}.right-card{padding:.1rem .1rem .45rem !important}.right-card p{font-size:.8rem !important}[data-testid="stForm"]{padding:1rem !important;border-radius:25px !important}[data-testid="stTextArea"] textarea{min-height:180px !important}}
 
+
+/* فراشات رقيقة ترفرف وتتحرك بهدوء */
+.butterfly-layer{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;}
+.child-butterfly{position:absolute;width:42px;height:40px;opacity:.78;animation:butterfly-float 8s ease-in-out infinite;transform-origin:center;filter:drop-shadow(0 3px 5px rgba(133,88,155,.16));}
+.child-butterfly .wing{position:absolute;width:16px;height:19px;border-radius:85% 16% 78% 20%;background:var(--wing,#b27bd1);transform-origin:100% 90%;}
+.child-butterfly .upper.left{left:4px;top:1px;transform:rotate(-28deg);animation:wing-left 1.15s ease-in-out infinite;}
+.child-butterfly .upper.right{right:4px;top:1px;transform:scaleX(-1) rotate(-28deg);animation:wing-right 1.15s ease-in-out infinite;}
+.child-butterfly .lower.left{left:5px;top:18px;width:13px;height:15px;transform:rotate(28deg);animation:wing-left 1.15s ease-in-out infinite reverse;}
+.child-butterfly .lower.right{right:5px;top:18px;width:13px;height:15px;transform:scaleX(-1) rotate(28deg);animation:wing-right 1.15s ease-in-out infinite reverse;}
+.child-butterfly .body{position:absolute;left:20px;top:8px;width:3px;height:25px;border-radius:99px;background:#75518d;z-index:2;}
+.child-butterfly .body:before,.child-butterfly .body:after{content:"";position:absolute;top:-4px;width:8px;height:8px;border-top:1.5px solid #75518d;border-radius:50%;}
+.child-butterfly .body:before{right:1px;transform:rotate(-25deg)}.child-butterfly .body:after{left:1px;transform:rotate(25deg)}
+.butterfly-one{--wing:#b58ad8;left:9%;top:27%;animation-duration:8.6s;}
+.butterfly-two{--wing:#e98ab7;right:8%;top:51%;animation-duration:9.4s;animation-delay:-2s;transform:scale(.82);}
+.butterfly-three{--wing:#ce9adf;left:15%;top:78%;animation-duration:10s;animation-delay:-4s;transform:scale(.72);}
+@keyframes butterfly-float{0%,100%{translate:0 0;rotate:-5deg}50%{translate:12px -15px;rotate:6deg}}
+@keyframes wing-left{0%,100%{scale:1 1}50%{scale:.62 1}}
+@keyframes wing-right{0%,100%{scale:1 1}50%{scale:.62 1}}
+@media(max-width:700px){.butterfly-one{left:7%;top:25%}.butterfly-two{right:6%;top:54%}.butterfly-three{left:10%;top:79%}}
+
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown("""
+<div class="butterfly-layer" aria-hidden="true"><span class="child-butterfly butterfly-one"><i class="wing upper left"></i><i class="wing upper right"></i><i class="wing lower left"></i><i class="wing lower right"></i><i class="body"></i></span><span class="child-butterfly butterfly-two"><i class="wing upper left"></i><i class="wing upper right"></i><i class="wing lower left"></i><i class="wing lower right"></i><i class="body"></i></span><span class="child-butterfly butterfly-three"><i class="wing upper left"></i><i class="wing upper right"></i><i class="wing lower left"></i><i class="wing lower right"></i><i class="body"></i></span></div>
 <nav class="top-nav" dir="rtl"><a class="nav-brand" href="#top">♥ هنا تتحدث الطفولة</a><div class="nav-links"><a href="#rights">حقوقي الجميلة</a><a href="#voice">هنا تتحدث الطفولة</a><a href="#wall">رسائل من القلب</a></div></nav>
 <div class="hero" id="top" dir="rtl"><div class="hero-tag">⭐ بمناسبة اليوم العالمي للطفل ⭐</div><h1>هنا تتحدث الطفولة</h1><div class="school-name">مدرسة الزويراء الأولى الابتدائية</div><p>لكل طفلة صوت، ولكل صوت حكاية… تعرّفي على حقوقك واكتبي رسالتك للعالم</p><div class="hero-actions"><a class="hero-primary" href="#voice">اكتبي رسالتك　❀</a><a class="hero-secondary" href="#rights">تعرّفي على حقوقك　♡</a></div></div>
 """, unsafe_allow_html=True)
