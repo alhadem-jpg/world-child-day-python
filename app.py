@@ -39,6 +39,16 @@ def connect_db():
     return conn
 
 
+def configured_teacher_password():
+    password = os.environ.get("TEACHER_PASSWORD", "")
+    if password:
+        return password
+    try:
+        return st.secrets.get("TEACHER_PASSWORD", "")
+    except Exception:
+        return ""
+
+
 def save_message(kind: str, body: str):
     with connect_db() as conn:
         conn.execute(
@@ -135,7 +145,7 @@ else:
 st.markdown("<hr>", unsafe_allow_html=True)
 with st.expander("🔐 لوحة المعلمة — مراجعة المشاركات"):
     password = st.text_input("كلمة مرور المعلمة", type="password", key="teacher_password")
-    configured_password = os.environ.get("TEACHER_PASSWORD", "")
+    configured_password = configured_teacher_password()
     if not configured_password:
         st.warning("لوحة المراجعة مقفلة حتى تضبط المعلمة كلمة المرور في إعدادات الاستضافة باسم TEACHER_PASSWORD.")
     elif password and hmac.compare_digest(password, configured_password):
