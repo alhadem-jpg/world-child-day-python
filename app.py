@@ -153,6 +153,10 @@ def next_motivation(name: str):
             conn.execute("DELETE FROM motivation_history")
             used = set()
             if last_phrase is not None and MOTIVATION_COUNT > 1:
+                conn.execute(
+                    "INSERT INTO motivation_history(phrase_id, used_at) VALUES (?, ?)",
+                    (last_phrase, datetime.utcnow().isoformat(timespec="seconds")),
+                )
                 used.add(last_phrase)
         available = [phrase_id for phrase_id in range(MOTIVATION_COUNT) if phrase_id not in used]
         phrase_id = random.choice(available)
