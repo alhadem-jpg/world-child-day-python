@@ -59,8 +59,9 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
 html, body, [class*="css"], button, input, textarea {font-family:'Cairo', sans-serif !important;}
-.stApp {background:linear-gradient(145deg,#fff9f3 0%,#fff0f5 48%,#f5f0ff 100%); color:#342747;}
-.block-container {max-width:1100px; padding-top:1.5rem; padding-bottom:3rem;}
+.stApp {background:#8acdfd url("https://raw.githubusercontent.com/alhadem-jpg/world-child-day-python/main/childrens-day-background.jpeg") center top / cover fixed no-repeat; color:#342747;}
+.block-container {max-width:1100px; padding:1.5rem 2rem 3rem; margin-top:1rem; margin-bottom:1rem; background:rgba(255,255,255,.78); border:1px solid rgba(255,255,255,.7); border-radius:28px; box-shadow:0 12px 34px #1d4d6a30; backdrop-filter:blur(2px);}
+@media (max-width:700px) {.block-container {padding:1rem .9rem 2rem !important; margin:.5rem; border-radius:22px;}}
 .hero {background:linear-gradient(115deg,#ff7999,#ff9e78 55%,#ffc66f); border-radius:30px; padding:2.1rem 2rem; text-align:center; color:white; box-shadow:0 14px 35px #de6d6c33; margin-bottom:1.2rem;}
 .hero h1 {font-size:clamp(2rem,5vw,3.35rem); margin:0; font-weight:900;}
 .hero p {font-size:1.1rem; margin:.55rem 0 0;}
