@@ -107,7 +107,7 @@ def connect_db():
 def save_message(kind: str, body: str):
     with connect_db() as conn:
         conn.execute(
-            "INSERT INTO messages(kind, body, approved, created_at) VALUES (?, ?, 1, ?)",
+            "INSERT INTO messages(kind, body, approved, created_at) VALUES (?, ?, 0, ?)",
             (kind, body.strip(), datetime.utcnow().isoformat(timespec="seconds")),
         )
 
@@ -132,6 +132,11 @@ def set_message_visibility(message_id: int, visible: bool):
             "UPDATE messages SET approved=? WHERE id=?",
             (1 if visible else 0, message_id),
         )
+
+
+def delete_message(message_id: int):
+    with connect_db() as conn:
+        conn.execute("DELETE FROM messages WHERE id=?", (message_id,))
 
 
 def teacher_password_configured():
@@ -310,8 +315,60 @@ hr {border-color:rgba(190,151,190,.3) !important;}
 .motivation-result {max-width:760px;margin:1rem auto 2rem;padding:1.3rem 1.5rem;border:2px solid #fff;border-radius:26px;background:linear-gradient(110deg,#fff1f6,#f3e9ff);color:#5b3f68;text-align:center;font-size:1.2rem;font-weight:900;line-height:1.9;box-shadow:0 10px 24px rgba(103,70,111,.13);animation:rise .55s ease both;}
 [data-testid="stTextInput"] input {background:#fff !important;color:#49324f !important;border:2px solid #ecd2e7 !important;border-radius:16px !important;}
 @media(max-width:700px){.motivation-form{padding:.9rem !important}.motivation-result{font-size:1.05rem;padding:1rem;}}
+
+.teacher-dashboard{padding:1.4rem 1.6rem;margin:.4rem 0 1.4rem;border:2px solid rgba(255,255,255,.96);border-radius:30px;background:linear-gradient(145deg,rgba(255,239,250,.96),rgba(247,237,255,.97));box-shadow:0 12px 28px rgba(103,70,111,.13);text-align:right;}
+.teacher-dashboard h2{margin:0 0 1rem;color:#c45ba8;font-size:2rem;font-weight:900;}
+.teacher-links{display:flex;flex-wrap:wrap;gap:.6rem;}
+.teacher-links a{display:inline-flex;padding:.55rem 1rem;border-radius:999px;background:rgba(255,255,255,.9);color:#613c67 !important;text-decoration:none !important;font-weight:800;}
+.teacher-message-card{margin:1rem 0 .55rem;padding:1.2rem 1.35rem;border:2px solid rgba(255,255,255,.98);border-radius:28px;background:rgba(255,255,255,.94);box-shadow:0 10px 24px rgba(108,72,112,.12);}
+.teacher-message-meta{display:flex;justify-content:space-between;gap:1rem;align-items:center;color:#956bb3;}
+.teacher-message-meta small{color:#827187;}
+.teacher-message-card p{margin:.9rem 0 .2rem;color:#4f3c57;font-size:1.08rem;line-height:1.9;}
+@media(max-width:700px){.teacher-dashboard{padding:1rem;border-radius:25px}.teacher-dashboard h2{font-size:1.7rem}.teacher-message-card{padding:1rem;border-radius:24px}.teacher-message-meta{align-items:flex-start;flex-direction:column;gap:.2rem}}
 </style>
 """, unsafe_allow_html=True)
+
+if st.session_state.get("teacher_authenticated", False):
+    teacher_messages = get_admin_messages()
+    pending_messages = [row for row in teacher_messages if not row["approved"]]
+    published_messages = [row for row in teacher_messages if row["approved"]]
+    st.markdown('<div class="teacher-dashboard" dir="rtl"><h2>التحكم بالرسائل</h2><div class="teacher-links"><a href="https://world-child-day-alzuwayrah.streamlit.app/" target="_blank">عرض الموقع ↗</a><a href="https://world-child-day-alzuwayrah.streamlit.app/" target="_blank">مشاركة الموقع ♧</a></div></div>', unsafe_allow_html=True)
+    if st.button("قفل اللوحة 🔒", key="teacher_logout_dashboard"):
+        st.session_state["teacher_authenticated"] = False
+        st.rerun()
+    pending_tab, published_tab = st.tabs([f"بانتظار الموافقة  {len(pending_messages)}", f"على الجدار  {len(published_messages)}"])
+    with pending_tab:
+        if not pending_messages:
+            st.info("لا توجد رسائل بانتظار الموافقة حاليًا.")
+        for row in pending_messages:
+            created = html.escape(str(row["created_at"]).replace("T", " · ")[:16])
+            st.markdown(f'<article class="teacher-message-card" dir="rtl"><div class="teacher-message-meta"><b>{html.escape(row["kind"])}</b><small>{created}</small></div><p>{html.escape(row["body"])}</p></article>', unsafe_allow_html=True)
+            approve_col, delete_col = st.columns([1, 1])
+            with approve_col:
+                if st.button("موافقة ونشر ✓", key=f"approve_message_dashboard_{row['id']}", use_container_width=True):
+                    set_message_visibility(row["id"], True)
+                    st.rerun()
+            with delete_col:
+                if st.button("حذف الرسالة 🗑️", key=f"delete_pending_dashboard_{row['id']}", use_container_width=True):
+                    delete_message(row["id"])
+                    st.rerun()
+    with published_tab:
+        if not published_messages:
+            st.info("لا توجد رسائل منشورة على الحائط حتى الآن.")
+        for row in published_messages:
+            created = html.escape(str(row["created_at"]).replace("T", " · ")[:16])
+            st.markdown(f'<article class="teacher-message-card" dir="rtl"><div class="teacher-message-meta"><b>{html.escape(row["kind"])}</b><small>{created}</small></div><p>{html.escape(row["body"])}</p></article>', unsafe_allow_html=True)
+            hide_col, delete_col = st.columns([1, 1])
+            with hide_col:
+                if st.button("إخفاء من الجدار", key=f"hide_message_dashboard_{row['id']}", use_container_width=True):
+                    set_message_visibility(row["id"], False)
+                    st.rerun()
+            with delete_col:
+                if st.button("حذف الرسالة 🗑️", key=f"delete_published_dashboard_{row['id']}", use_container_width=True):
+                    delete_message(row["id"])
+                    st.rerun()
+    st.markdown('<div class="footer" dir="rtl">صُنع بكل 💗 لطالبات الزويراء</div>', unsafe_allow_html=True)
+    st.stop()
 
 st.markdown("""
 <div class="butterfly-layer" aria-hidden="true"><span class="child-butterfly"><svg viewBox="0 0 42 46" role="presentation"><g class="butterfly-wing-left"><path d="M20.5 22C15 19 10 11 8.5 5.2 7.4 1.1 11.1-.5 14 2.1c4.1 3.7 6.2 11.2 7.2 18.8z" fill="#a77bd3"/><path d="M20.5 23c-5.8-.2-10 4.1-11.2 9.7-.9 4.4 1.5 7.1 4.3 5.2 3.8-2.6 6-8.2 7.2-14.9z" fill="#a77bd3"/></g><g class="butterfly-wing-right"><path d="M21.5 22C27 19 32 11 33.5 5.2 34.6 1.1 30.9-.5 28 2.1c-4.1 3.7-6.2 11.2-7.2 18.8z" fill="#a77bd3"/><path d="M21.5 23c5.8-.2 10 4.1 11.2 9.7.9 4.4-1.5 7.1-4.3 5.2-3.8-2.6-6-8.2-7.2-14.9z" fill="#a77bd3"/></g><path d="M21 13v28" stroke="#705786" stroke-width="2.2" stroke-linecap="round"/><path d="M21 14c-1-4-3-6-5-7m5 7c1-4 3-6 5-7" fill="none" stroke="#705786" stroke-width="1.2" stroke-linecap="round"/></svg></span></div>
@@ -352,14 +409,14 @@ st.markdown('<div id="voice" class="section-head" dir="rtl"><span class="section
 with st.form("message_form", clear_on_submit=True):
     kind = st.radio("اختاري نوع المشاركة", POST_TYPES, horizontal=True)
     message = st.text_area("اكتبي رسالتك هنا", max_chars=400, height=130, placeholder="اكتبي كلماتك الجميلة… من دون اسم أو أي معلومة شخصية.")
-    st.caption("لخصوصيتك: لا تكتبي اسمك أو رقمك أو أي معلومة تكشف هويتك. ستظهر رسالتك للجميع فور إرسالها، فاكتبي كلمات لطيفة وآمنة.")
+    st.caption("لخصوصيتك: لا تكتبي اسمك أو رقمك أو أي معلومة تكشف هويتك. ستظهر رسالتك بعد مراجعة المعلمة وموافقتها.")
     submitted = st.form_submit_button("💌 إرسال رسالتي", use_container_width=True)
     if submitted:
         if len(message.strip()) < 3:
             st.warning("اكتبي رسالتك أولًا، ولو بكلمات قليلة 🌷")
         else:
             save_message(kind, message)
-            st.success("ظهرت رسالتك للجميع في لوحة رسائل من القلب. شكرًا لصوتك الجميل! 💖")
+            st.success("وصلت رسالتك للمعلمة للمراجعة، وستظهر على الحائط بعد موافقتها. شكرًا لصوتك الجميل! 💖")
 
 st.markdown('<div id="wall" class="section-head" dir="rtl"><span class="section-kicker">القسم الثالث　❀</span><h2>رسائل من القلب</h2><p>كلمات جميلة كتبتها طالباتنا الغاليات</p><span class="section-stars">♥　★　♥</span></div>', unsafe_allow_html=True)
 public_messages = get_messages()
@@ -391,22 +448,41 @@ with st.expander("🔐 لوحة المعلمة — إدارة رسائل الح�
             else:
                 st.error("الرمز غير صحيح.")
     else:
-        if st.button("تسجيل الخروج من لوحة المعلمة", key="teacher_logout"):
+        teacher_messages = get_admin_messages()
+        pending_messages = [row for row in teacher_messages if not row["approved"]]
+        published_messages = [row for row in teacher_messages if row["approved"]]
+        st.markdown('<div class="teacher-dashboard" dir="rtl"><h2>التحكم بالرسائل</h2><div class="teacher-links"><a href="https://world-child-day-alzuwayrah.streamlit.app/" target="_blank">عرض الموقع ↗</a><a href="https://world-child-day-alzuwayrah.streamlit.app/" target="_blank">مشاركة الموقع ♧</a></div></div>', unsafe_allow_html=True)
+        if st.button("قفل اللوحة 🔒", key="teacher_logout", use_container_width=False):
             st.session_state["teacher_authenticated"] = False
             st.rerun()
-        teacher_messages = get_admin_messages()
-        if not teacher_messages:
-            st.info("لا توجد رسائل في الحائط حتى الآن.")
-        for row in teacher_messages:
-            with st.container():
-                status = "منشورة" if row["approved"] else "مخفاة عن الزائرات"
-                st.markdown(f"**{html.escape(row['kind'])} — {status}**")
-                st.write(row["body"])
-                if row["approved"]:
-                    if st.button("إخفاء الرسالة من الحائط", key=f"hide_message_{row['id']}"):
+        pending_tab, published_tab = st.tabs([f"بانتظار الموافقة  {len(pending_messages)}", f"على الجدار  {len(published_messages)}"])
+        with pending_tab:
+            if not pending_messages:
+                st.info("لا توجد رسائل بانتظار الموافقة حاليًا.")
+            for row in pending_messages:
+                created = html.escape(str(row["created_at"]).replace("T", " · ")[:16])
+                st.markdown(f'<article class="teacher-message-card" dir="rtl"><div class="teacher-message-meta"><b>{html.escape(row["kind"])}</b><small>{created}</small></div><p>{html.escape(row["body"])}</p></article>', unsafe_allow_html=True)
+                approve_col, delete_col = st.columns([1, 1])
+                with approve_col:
+                    if st.button("موافقة ونشر ✓", key=f"approve_message_{row['id']}", use_container_width=True):
+                        set_message_visibility(row["id"], True)
+                        st.rerun()
+                with delete_col:
+                    if st.button("حذف الرسالة 🗑️", key=f"delete_pending_{row['id']}", use_container_width=True):
+                        delete_message(row["id"])
+                        st.rerun()
+        with published_tab:
+            if not published_messages:
+                st.info("لا توجد رسائل منشورة على الحائط حتى الآن.")
+            for row in published_messages:
+                created = html.escape(str(row["created_at"]).replace("T", " · ")[:16])
+                st.markdown(f'<article class="teacher-message-card" dir="rtl"><div class="teacher-message-meta"><b>{html.escape(row["kind"])}</b><small>{created}</small></div><p>{html.escape(row["body"])}</p></article>', unsafe_allow_html=True)
+                hide_col, delete_col = st.columns([1, 1])
+                with hide_col:
+                    if st.button("إخفاء من الجدار", key=f"hide_message_{row['id']}", use_container_width=True):
                         set_message_visibility(row["id"], False)
                         st.rerun()
-                else:
-                    if st.button("إظهار الرسالة مجددًا", key=f"show_message_{row['id']}"):
-                        set_message_visibility(row["id"], True)
+                with delete_col:
+                    if st.button("حذف الرسالة 🗑️", key=f"delete_published_{row['id']}", use_container_width=True):
+                        delete_message(row["id"])
                         st.rerun()
