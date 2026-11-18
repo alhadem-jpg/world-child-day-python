@@ -196,6 +196,18 @@ hr {border-color:rgba(190,151,190,.3) !important;}
 @keyframes wing-right{0%,100%{scale:1 1}50%{scale:.62 1}}
 @media(max-width:700px){.butterfly-one{left:7%;top:25%}.butterfly-two{right:6%;top:54%}.butterfly-three{left:10%;top:79%}}
 
+
+/* بطاقات الحقوق: إطار مستقل بعرض كامل مثل المثال */
+.stHorizontalBlock:has(.right-card){display:flex !important;flex-direction:column !important;align-items:stretch !important;gap:1.15rem !important;width:min(100%,760px) !important;margin:0 auto 1rem !important;}
+.stHorizontalBlock:has(.right-card) [data-testid="column"]{box-sizing:border-box !important;width:100% !important;max-width:100% !important;flex:0 0 auto !important;margin:0 !important;padding:1.1rem 1rem .75rem !important;min-height:12.5rem !important;border:2px solid rgba(255,255,255,.98) !important;border-radius:32px !important;background:linear-gradient(145deg,rgba(255,239,250,.97),rgba(248,238,255,.97)) !important;box-shadow:0 12px 26px rgba(103,70,111,.14) !important;transition:transform .25s ease,box-shadow .25s ease !important;}
+.stHorizontalBlock:has(.right-card) [data-testid="column"]:hover{transform:translateY(-3px) !important;box-shadow:0 16px 30px rgba(103,70,111,.18) !important;}
+.stHorizontalBlock:has(.right-card) div[data-testid="stButton"]{width:100% !important;}
+.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button{width:100% !important;min-height:8.3rem !important;padding:1rem !important;border:0 !important;border-radius:24px !important;background:transparent !important;box-shadow:none !important;color:#49324f !important;font-size:1.45rem !important;font-weight:900 !important;white-space:normal !important;}
+.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button p{color:#49324f !important;font-size:1.4rem !important;font-weight:900 !important;line-height:1.5 !important;text-align:center !important;text-shadow:none !important;}
+.stHorizontalBlock:has(.right-card) .right-card{min-height:2rem !important;margin:0 !important;padding:.15rem .3rem .35rem !important;background:transparent !important;border:0 !important;outline:0 !important;box-shadow:none !important;}
+.stHorizontalBlock:has(.right-card) .right-card p{margin:0 !important;color:#806c84 !important;font-size:1.05rem !important;line-height:1.6 !important;}
+@media(max-width:700px){.stHorizontalBlock:has(.right-card){width:100% !important;gap:1rem !important;margin-bottom:.8rem !important;}.stHorizontalBlock:has(.right-card) [data-testid="column"]{min-height:12rem !important;padding:.9rem .8rem .65rem !important;border-radius:30px !important;}.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button{min-height:7.6rem !important;font-size:1.25rem !important;}.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button p{font-size:1.25rem !important;}.stHorizontalBlock:has(.right-card) .right-card p{font-size:.98rem !important;}}
+
 </style>
 """, unsafe_allow_html=True)
 
