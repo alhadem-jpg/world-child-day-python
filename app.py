@@ -122,7 +122,7 @@ def get_messages():
 def get_admin_messages():
     with connect_db() as conn:
         return conn.execute(
-            "SELECT id, kind, body, approved FROM messages ORDER BY id DESC"
+            "SELECT id, kind, body, approved, created_at FROM messages ORDER BY id DESC"
         ).fetchall()
 
 
