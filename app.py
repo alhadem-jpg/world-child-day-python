@@ -82,7 +82,7 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
 html, body, [class*="css"], button, input, textarea {font-family:'Cairo', sans-serif !important;}
-.stApp {background:linear-gradient(150deg,rgba(255,222,238,.22),rgba(208,238,255,.16)), url("https://raw.githubusercontent.com/alhadem-jpg/world-child-day-python/main/childrens-day-background.jpeg") center top / cover fixed no-repeat; color:#342747;}
+.stApp {background:linear-gradient(150deg,rgba(255,222,238,.22),rgba(208,238,255,.16)), url("https://raw.githubusercontent.com/alhadem-jpg/world-child-day-python/main/childrens-day-pastel-background.jpeg") center top / cover fixed no-repeat; color:#342747;}
 .block-container {max-width:1100px; padding:1.5rem 2rem 3rem; margin-top:1rem; margin-bottom:1rem; background:rgba(255,255,255,.78); border:2px solid rgba(255,255,255,.85); border-radius:30px; box-shadow:0 12px 34px #1d4d6a30; backdrop-filter:blur(3px);}
 @media (max-width:700px) {.block-container {padding:1rem .9rem 2rem !important; margin:.5rem; border-radius:22px;}}
 .hero {background:linear-gradient(115deg,#ff79a8,#ff9e78 55%,#ffd36f); border:3px solid rgba(255,255,255,.7); border-radius:30px; padding:2.1rem 2rem; text-align:center; color:white; box-shadow:0 14px 35px #de6d6c33; margin-bottom:1.2rem;}
@@ -106,7 +106,7 @@ div[data-testid="stButton"] button {border:0; border-radius:16px; font-weight:90
 .footer {text-align:center;color:#80677b;background:#fff;border-radius:18px;padding:1.2rem;margin-top:2rem;border:1px solid #f6dce3;}
 hr {border-color:#c9e7fa;}
 /* اجعل صورة يوم الطفل هي خلفية الصفحة ونسّق الواجهة كلوحة احتفالية */
-.stApp {background: url("https://raw.githubusercontent.com/alhadem-jpg/world-child-day-python/main/childrens-day-background.jpeg") center top / cover fixed no-repeat #80cff8 !important; color:#342747;}
+.stApp {background: url("https://raw.githubusercontent.com/alhadem-jpg/world-child-day-python/main/childrens-day-pastel-background.jpeg") center top / cover fixed no-repeat #80cff8 !important; color:#342747;}
 .block-container {background:rgba(255,255,255,.34) !important; border:3px solid rgba(255,255,255,.78) !important; border-radius:38px !important; box-shadow:0 12px 34px #2678a533 !important; backdrop-filter:none !important;}
 .hero {background:linear-gradient(115deg,#38bdf8,#8b83f6 52%,#ff79a8) !important; border:4px solid #fff !important; border-radius:36px !important; box-shadow:0 10px 0 #55a8dc55,0 16px 30px #3479a844 !important;}
 .section-title {display:inline-block; padding:.28rem 1rem; background:rgba(255,255,255,.93); border:2px solid #f5c6dc; border-radius:999px; box-shadow:0 5px 14px #597da022; text-shadow:0 1px #fff;}
@@ -117,6 +117,22 @@ hr {border-color:#c9e7fa;}
 .right-card {background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(255,246,252,.96)) !important; border:3px solid #fff !important; outline:2px solid #f3bfd8; box-shadow:0 8px 0 #f1cee0,0 12px 22px #5382a322 !important;}
 .school, .footer {box-shadow:0 7px 0 #efc9df55,0 10px 24px #5180a322 !important;}
 @media (max-width:700px) {.stApp {background-attachment:scroll !important; background-size:100% auto !important;} .block-container {background:rgba(255,255,255,.42) !important; padding:1rem .9rem 2rem !important; border-radius:26px !important;} [data-testid="stForm"] {padding:.8rem !important;}}
+
+/* خلفية الطفل الجديدة مع واجهة أمامية واضحة */
+.stApp {background:url("https://raw.githubusercontent.com/alhadem-jpg/world-child-day-python/main/childrens-day-pastel-background.jpeg") center top / cover fixed no-repeat #fff0eb !important; color:#49384a !important;}
+.block-container {background:rgba(255,250,247,.86) !important; border:3px solid rgba(255,255,255,.96) !important; border-radius:32px !important; box-shadow:0 12px 34px rgba(125,82,88,.18) !important; backdrop-filter:blur(2px) !important;}
+.hero {background:linear-gradient(115deg,#f28f9b,#f5b184 55%,#f6d28d) !important; border:4px solid #fff !important; border-radius:32px !important; color:#fff !important; text-shadow:0 2px 5px rgba(104,55,67,.3) !important; box-shadow:0 9px 0 rgba(226,153,141,.28),0 14px 28px rgba(154,103,101,.2) !important;}
+.school,.footer {background:rgba(255,255,255,.96) !important; border:2px solid #f2d2cc !important; color:#5a4655 !important;}
+.section-title {background:rgba(255,255,255,.97) !important; color:#9a5574 !important; border:2px solid #edc2cf !important; box-shadow:0 5px 14px rgba(131,80,97,.12) !important;}
+.section-hint {background:rgba(255,255,255,.92) !important; color:#584553 !important; border:1px solid #f0ddd5 !important;}
+[data-testid="stForm"] {background:rgba(255,255,255,.96) !important; border:2px solid #f2d2cc !important; box-shadow:0 8px 22px rgba(131,80,97,.12) !important;}
+.right-card {background:rgba(255,255,255,.96) !important; border:2px solid #f1d5cf !important; outline:1px solid #edc2cf !important; box-shadow:0 7px 0 rgba(238,211,204,.6),0 12px 22px rgba(100,76,84,.1) !important;}
+.message-wall {background:rgba(255,255,255,.94) !important; border-color:#eabaca !important;}
+[data-testid="stTextArea"] textarea {background:#fff !important; color:#49384a !important; border-color:#e9bdc8 !important;}
+[data-testid="stFormSubmitButton"] button,div[data-testid="stButton"] button {background:linear-gradient(105deg,#d8798c,#b97b9d 60%,#dda66d) !important; border:2px solid #fff !important; color:#fff !important; box-shadow:0 4px 0 rgba(171,107,124,.3) !important;}
+[data-testid="stFormSubmitButton"] button *,div[data-testid="stButton"] button * {color:#fff !important;}
+@media (max-width:700px) {.stApp {background-attachment:scroll !important; background-size:100% auto !important;} .block-container {background:rgba(255,250,247,.9) !important; padding:1rem .9rem 2rem !important; border-radius:26px !important;} [data-testid="stForm"] {padding:.8rem !important;}}
+
 </style>
 """, unsafe_allow_html=True)
 
