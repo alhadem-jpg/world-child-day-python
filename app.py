@@ -74,9 +74,11 @@ div[data-testid="stButton"] button {border:0; border-radius:16px; font-weight:90
 .right-card .emoji {font-size:2rem;}
 .right-card h3 {font-size:1.08rem; color:#5a3c78; margin:.45rem 0;}
 .right-card p {font-size:.94rem; color:#735f75; margin:0;}
-.message-card {padding:1.15rem 1.25rem; border-radius:20px; margin:.65rem 0; box-shadow:0 8px 22px #4e2c550d; animation:rise .55s ease both;}
+.message-wall {display:flex; flex-direction:column; align-items:stretch; gap:.9rem; width:100%; max-width:900px; margin:1rem auto; padding:1rem; box-sizing:border-box; border:3px dashed #e9a7c7; border-radius:28px; background:rgba(255,255,255,.9); box-shadow:0 10px 24px #8b4d7418;}
+.message-card {display:block !important; flex:0 0 auto !important; width:100% !important; max-width:100% !important; box-sizing:border-box; padding:1.15rem 1.25rem; border-radius:20px; margin:0; box-shadow:0 8px 22px #4e2c550d; animation:rise .55s ease both;}
 .message-card p {font-size:1.05rem; margin:.3rem 0 0; line-height:1.9;}
 .message-card small {opacity:.76; font-weight:700;}
+@media (max-width:700px) {.message-wall {padding:.65rem; border-width:2px;} .message-card {padding:1rem;}}
 @keyframes rise {from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .footer {text-align:center;color:#80677b;background:#fff;border-radius:18px;padding:1.2rem;margin-top:2rem;border:1px solid #f6dce3;}
 hr {border-color:#f0dfe8;}
@@ -121,13 +123,14 @@ with st.form("message_form", clear_on_submit=True):
 
 st.markdown('<div class="section-title" dir="rtl">💌 رسائل من القلب</div><div class="section-hint" dir="rtl">رسائل الطالبات تظهر هنا مباشرة بعد إرسالها.</div>', unsafe_allow_html=True)
 public_messages = get_messages()
-if not public_messages:
-    st.info("كوني أول من يرسل كلمة جميلة هنا 🌸")
-else:
-    colors = [("#fff0f5", "#f6cfdf"), ("#f5efff", "#dfd0f5"), ("#ffffff", "#eee4ec")]
-    for i, row in enumerate(public_messages):
-        bg, border = colors[i % len(colors)]
-        st.markdown(f'<div class="message-card" dir="rtl" style="background:{bg};border:1px solid {border}"><small>{html.escape(row["kind"])} 💗</small><p>{html.escape(row["body"])}</p></div>', unsafe_allow_html=True)
+colors = [("#fff0f5", "#f6cfdf"), ("#f5efff", "#dfd0f5"), ("#ffffff", "#eee4ec")]
+wall_cards = []
+for i, row in enumerate(public_messages):
+    bg, border = colors[i % len(colors)]
+    wall_cards.append(f'<div class="message-card" dir="rtl" style="background:{bg};border:2px solid {border}"><small>{html.escape(row["kind"])} 💗</small><p>{html.escape(row["body"])}</p></div>')
+if not wall_cards:
+    wall_cards.append('<div class="message-card" dir="rtl" style="background:#fff0f5;border:2px solid #f6cfdf"><p>كوني أول من يرسل كلمة جميلة هنا 🌸</p></div>')
+st.markdown(f'<div class="message-wall" dir="rtl">{"".join(wall_cards)}</div>', unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown('<div class="footer" dir="rtl">بكل الحب، <b>مدرسة الزويراء الأولى الابتدائية</b><br><span class="teacher-credit">إعداد: أ. منال الحربي و أ. ساميه ناصر 🌷</span></div>', unsafe_allow_html=True)
