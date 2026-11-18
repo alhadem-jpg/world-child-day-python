@@ -214,6 +214,14 @@ hr {border-color:rgba(190,151,190,.3) !important;}
 .stHorizontalBlock:has(.right-card) > div[data-testid="stColumn"] > div{width:100% !important;}
 @media(max-width:700px){.stHorizontalBlock:has(.right-card) > div[data-testid="stColumn"]{min-height:12rem !important;padding:.9rem .8rem .65rem !important;border-radius:30px !important;}}
 
+
+/* أيقونة دائرية لكل حق داخل بطاقته */
+.right-icon{width:92px;height:92px;margin:.1rem auto .25rem;display:flex;align-items:center;justify-content:center;border:9px solid #fff;border-radius:50%;background:var(--right-icon,#59acd2);box-shadow:0 5px 14px rgba(77,66,92,.12);font-size:2.8rem;line-height:1;}
+.icon-0{--right-icon:#52a8d1}.icon-1{--right-icon:#e8b83d}.icon-2{--right-icon:#42b89a}.icon-3{--right-icon:#ee9565}.icon-4{--right-icon:#e36aa7}.icon-5{--right-icon:#9871d1}
+.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button{min-height:3.6rem !important;padding:.15rem .5rem !important;font-size:1.4rem !important;}
+.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button p{font-size:1.4rem !important;line-height:1.45 !important;}
+@media(max-width:700px){.right-icon{width:82px;height:82px;font-size:2.4rem;border-width:8px}.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button{min-height:3.4rem !important;font-size:1.2rem !important}.stHorizontalBlock:has(.right-card) div[data-testid="stButton"] button p{font-size:1.2rem !important}}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -227,7 +235,8 @@ st.markdown('<div id="rights" class="section-head" dir="rtl"><span class="sectio
 cols = st.columns(3)
 for i, (emoji, title, description) in enumerate(RIGHTS):
     with cols[i % 3]:
-        if st.button(f"{emoji}  {title}", key=f"right_{i}", use_container_width=True):
+        st.markdown(f'<div class="right-icon icon-{i}" aria-hidden="true">{emoji}</div>', unsafe_allow_html=True)
+        if st.button(title, key=f"right_{i}", use_container_width=True):
             st.session_state["selected_right"] = i
         if st.session_state.get("selected_right") == i:
             card_text = description
