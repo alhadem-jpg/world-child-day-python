@@ -86,7 +86,7 @@ st.markdown("""
   <h1>🌍 اليوم العالمي للطفل 🧸</h1>
   <p>نفرح، نحلم، ونكتب رسائل من القلب 💛</p>
 </div>
-<div class="school" dir="rtl"><b>مدرسة الزويراء الأولى الابتدائية</b><br>معًا نحتفي بحقوق كل طفل ونستمع لصوته الجميل</div>
+<div class="school" dir="rtl"><b>بكل الحب، مدرسة الزويراء الأولى الابتدائية</b><br>إعداد: أ. منال الحربي 🌷<br>معًا نحتفي بحقوق كل طفل ونستمع لصوته الجميل</div>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="section-title" dir="rtl">حقوقي الجميلة</div><div class="section-hint" dir="rtl">لكل طفل حقوق جميلة تساعده أن يكبر سعيدًا وآمنًا.</div>', unsafe_allow_html=True)
