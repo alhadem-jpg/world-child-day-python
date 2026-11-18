@@ -1,4 +1,5 @@
 import html
+import hmac
 import os
 import sqlite3
 from datetime import datetime
@@ -51,6 +52,28 @@ def get_messages():
         return conn.execute(
             "SELECT id, kind, body FROM messages WHERE approved=1 ORDER BY id DESC"
         ).fetchall()
+
+
+def get_admin_messages():
+    with connect_db() as conn:
+        return conn.execute(
+            "SELECT id, kind, body, approved FROM messages ORDER BY id DESC"
+        ).fetchall()
+
+
+def set_message_visibility(message_id: int, visible: bool):
+    with connect_db() as conn:
+        conn.execute(
+            "UPDATE messages SET approved=? WHERE id=?",
+            (1 if visible else 0, message_id),
+        )
+
+
+def teacher_password_configured():
+    try:
+        return str(st.secrets.get("TEACHER_PASSWORD", ""))
+    except Exception:
+        return os.environ.get("TEACHER_PASSWORD", "")
 
 
 connect_db().close()
@@ -146,3 +169,39 @@ st.markdown(f'<div class="message-wall" dir="rtl">{"".join(wall_cards)}</div>', 
 
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown('<div class="footer" dir="rtl">بكل الحب، <b>مدرسة الزويراء الأولى الابتدائية</b><br><span class="teacher-credit">إعداد: أ. منال الحربي و أ. ساميه ناصر 🌷</span></div>', unsafe_allow_html=True)
+
+st.markdown("<hr>", unsafe_allow_html=True)
+with st.expander("🔐 لوحة المعلمة — إدارة رسائل الحائط"):
+    teacher_password = teacher_password_configured()
+    if not teacher_password:
+        st.info("لوحة المعلمة مقفلة حتى تضبطي رمزًا خاصًا في Streamlit: App settings → Secrets، ثم أضيفي TEACHER_PASSWORD = \"رمزك السري\" وأعيدي تشغيل التطبيق.")
+    elif not st.session_state.get("teacher_authenticated", False):
+        with st.form("teacher_login_form"):
+            entered_password = st.text_input("رمز المعلمة", type="password")
+            login = st.form_submit_button("دخول لوحة المعلمة", use_container_width=True)
+        if login:
+            if hmac.compare_digest(entered_password.encode("utf-8"), teacher_password.encode("utf-8")):
+                st.session_state["teacher_authenticated"] = True
+                st.rerun()
+            else:
+                st.error("الرمز غير صحيح.")
+    else:
+        if st.button("تسجيل الخروج من لوحة المعلمة", key="teacher_logout"):
+            st.session_state["teacher_authenticated"] = False
+            st.rerun()
+        teacher_messages = get_admin_messages()
+        if not teacher_messages:
+            st.info("لا توجد رسائل في الحائط حتى الآن.")
+        for row in teacher_messages:
+            with st.container():
+                status = "منشورة" if row["approved"] else "مخفاة عن الزائرات"
+                st.markdown(f"**{html.escape(row['kind'])} — {status}**")
+                st.write(row["body"])
+                if row["approved"]:
+                    if st.button("إخفاء الرسالة من الحائط", key=f"hide_message_{row['id']}"):
+                        set_message_visibility(row["id"], False)
+                        st.rerun()
+                else:
+                    if st.button("إظهار الرسالة مجددًا", key=f"show_message_{row['id']}"):
+                        set_message_visibility(row["id"], True)
+                        st.rerun()
